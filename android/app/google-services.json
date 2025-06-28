@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "635634134902",
+    "firebase_url": "https://clonebca-8da26-default-rtdb.firebaseio.com",
+    "project_id": "clonebca-8da26",
+    "storage_bucket": "clonebca-8da26.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635634134902:android:7c47fdf9e64ee388ab5457",
+        "android_client_info": {
+          "package_name": "com.livin_clone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFUgbUxtw6KUSiC9iRhfDYiRygV03JIWo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635634134902:android:e4976ec9d455a628ab5457",
+        "android_client_info": {
+          "package_name": "com.mylivin_clone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFUgbUxtw6KUSiC9iRhfDYiRygV03JIWo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635634134902:android:92b4d9cd2533e1b6ab5457",
+        "android_client_info": {
+          "package_name": "com.mybcaadmin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFUgbUxtw6KUSiC9iRhfDYiRygV03JIWo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,7 +1,7 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, {createContext, useState, useEffect, useContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
-import { useIndicator } from './IndicatorContext';
+import {useIndicator} from './IndicatorContext';
 
 // AuthContext
 export const AuthContext = createContext();
@@ -9,10 +9,7 @@ export const AuthContext = createContext();
 // LockContext
 export const LockContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().toLocaleString('id-ID', {month: 'long'});
-  const currentDate = new Date().toLocaleString('id-ID', { day: 'numeric' });
+export const AuthProvider = ({children}) => {
   const [isLogin, setIsLogin] = useState(false);
   const [saldo, setSaldo] = useState(0);
   const [saldoTertahan, setSaldoTertahan] = useState(0);
@@ -21,252 +18,17 @@ export const AuthProvider = ({ children }) => {
   const [noRekening, setNoRekening] = useState('1234567');
   const [bcaId, setBcaId] = useState('POKER 12988');
   const [loading, setLoading] = useState(true);
-  const [mutasi, setMutasi] = useState([
-    {
-      bulan: 'Januari',
-      data: [
-        {
-          tanggal: `19 Januari ${currentYear}`,
-          bank: 'BANK PERMATA',
-          nama: 'Hotman Cahaya',
-          noreg: '99213123112',
-          nominal: 10000000,
-          status: 'in',
-          keterangan:'Tranfer Rupiah',
-          id: 123
-        },
-        {
-          tanggal: `28 Januari ${currentYear}`,
-          bank: 'BANK BCA',
-          nama: 'FAUZAN DASILVA',
-          noreg: '788123912',
-          nominal: 20000000,
-          status: 'out',
-          keterangan: 'Tranfer Rupiah',
-          id: 1235,
-        },
-        {
-          tanggal: `28 Januari ${currentYear}`,
-          bank: 'BANK BCA',
-          nama: 'EDI PUTRA',
-          noreg: '99213123112',
-          nominal: 7000,
-          status: 'out',
-          keterangan:'Biaya',
-          detaiKeterangan: "Biaya Tranfer",
-          id: 1236,
-      },
-      ],
-    },
-    {
-      bulan: 'Februari',
-      data: [
-        {
-          tanggal: `19 Februari ${currentYear}`,
-          bank: 'BANK JAGO',
-          nama: 'Hotman Cahaya',
-          noreg: '99213123112',
-          nominal: 10000000,
-          status: 'in',
-          keterangan:'Tranfer Rupiah',
-          id: 1237,
-        },
-        {
-          tanggal: `28 Februari ${currentYear}`,
-          bank: 'BANK BCA',
-          nama: 'FAUZAN DASILVA',
-          noreg: '788123912',
-          nominal: 50000000,
-          status: 'out',
-          keterangan: 'Tranfer Rupiah',
-          id: 1238,
-        },
-      ],
-    },
-    {
-      bulan: 'Maret',
-      data: [
-        {
-          tanggal: `19 Maret ${currentYear}`,
-          bank: 'BANK JAGO',
-          nama: 'Hotman Cahaya',
-          noreg: '99213123112',
-          nominal: 10000000,
-          status: 'in',
-          id: 1239,
-        },
-        {
-          tanggal: `20 Maret ${currentYear}`,
-          bank: 'BANK BCA',
-          nama: 'FAUZAN DASILVA',
-          noreg: '788123912',
-          nominal: 2000000,
-          status: 'out',
-          keterangan: 'Tranfer',
-          id: 12310,
-        },
-      ],
-    },
-    {
-      bulan: 'April',
-      data: [
-        {
-          tanggal: `${currentDate} ${currentMonth} ${currentYear}`,
-          bank: 'BANK BCA',
-          nama: 'DASILVA',
-          noreg: '781231233',
-          nominal: 35000000,
-          status: 'in',
-          keterangan: 'Tranfer Rupiah',
-          id: 12311,
-        },
-        {
-          tanggal: `${currentDate-1} ${currentMonth} ${currentYear}`,
-          bank: 'BANK BCA',
-          nama: 'EDI PUTRA',
-          noreg: '788123912',
-          nominal: 20000000,
-          status: 'out',
-          keterangan: 'Tranfer Rupiah',
-          id: 12312,
-        },
-        {
-            tanggal: `${currentDate-1} ${currentMonth} ${currentYear}`,
-            bank: 'BANK BCA',
-            nama: 'EDI PUTRA',
-            noreg: '99213123112',
-            nominal: 7000,
-            status: 'out',
-            keterangan:'Biaya',
-            detaiKeterangan: "Biaya Tranfer",
-            id: 12313,
-        },
-        {
-          tanggal: `${currentDate-2} ${currentMonth} ${currentYear}`,
-          bank: 'BANK BCA',
-          nama: 'FAUZAN DASILVA',
-          noreg: '788123912',
-          nominal: 8000000,
-          status: 'out',
-          keterangan: 'Tranfer Rupiah',
-          id: 12314,
-        },
-        {
-            tanggal: `${currentDate-2} ${currentMonth} ${currentYear}`,
-            bank: 'BANK BCA',
-            nama: 'EDI PUTRA',
-            noreg: '99213123112',
-            nominal: 7000,
-            status: 'out',
-            keterangan: 'Biaya',
-            detaiKeterangan: "Biaya Tranfer",
-            id: 12315,
-        },
-        {
-            tanggal: `${currentDate-4} ${currentMonth} ${currentYear}`,
-            bank: 'BANK BCA',
-            nama: 'EDI PUTRA',
-            noreg: '788123912',
-            nominal: 2000000,
-            status: 'in',
-            keterangan:'Tranfer Rupiah',
-            id: 12316,
-        },
-        {
-            tanggal: `${currentDate-4} ${currentMonth} ${currentYear}`,
-            bank: 'BANK BCA',
-            nama: 'EDI PUTRA',
-            noreg: '788123912',
-            nominal: 40000000,
-            status: 'in',
-            keterangan:'Tranfer Rupiah',
-            id: 12317,
-        },
-      ],
-    },
-    {
-      bulan: 'Mei',
-      data: [
-        {
-          tanggal: `19 Mei ${currentYear}`,
-          bank: 'BANK JAGO',
-          nama: 'Hotman Cahaya',
-          noreg: '99213123112',
-          nominal: 10000000,
-          status: 'in',
-          id: 12313,
-        },
-        {
-          tanggal: `20 Mei ${currentYear}`,
-          bank: 'BANK BCA',
-          nama: 'FAUZAN DASILVA',
-          noreg: '788123912',
-          nominal: 2000000,
-          status: 'out',
-          keterangan: 'Tranfer',
-          id: 12314,
-        },
-      ],
-    },
-    {
-      bulan: 'Juni',
-      data: [
-        {
-          tanggal: `19 Juni ${currentYear}`,
-          bank: 'BANK JAGO',
-          nama: 'Hotman Cahaya',
-          noreg: '99213123112',
-          nominal: 10000000,
-          status: 'in',
-          id: 12315,
-        },
-        {
-          tanggal: `20 Juni ${currentYear}`,
-          bank: 'BANK BCA',
-          nama: 'FAUZAN DASILVA',
-          noreg: '788123912',
-          nominal: 2000000,
-          status: 'out',
-          keterangan: 'Tranfer',
-          id: 12316,
-        },
-      ],
-    },
-    {
-      bulan: 'Juli',
-      data: [
-        {
-          tanggal: `19 Juli ${currentYear}`,
-          bank: 'BANK JAGO',
-          nama: 'Hotman Cahaya',
-          noreg: '99213123112',
-          nominal: 10000000,
-          status: 'in',
-          id: 12317,
-        },
-        {
-          tanggal: `20 Juli ${currentYear}`,
-          bank: 'BANK BCA',
-          nama: 'FAUZAN DASILVA',
-          noreg: '788123912',
-          nominal: 2000000,
-          status: 'out',
-          keterangan: 'Tranfer',
-          id: 12318,
-        },
-      ],
-    },
-  ]);
+  const [mutasi, setMutasi] = useState([]);
 
   const [isLocked, setIsLocked] = useState(false);
   const [limitDate, setLimitDate] = useState(new Date());
 
-  const { setColor } = useIndicator()
+  const {setColor} = useIndicator();
 
   // Load user data from AsyncStorage
   const loadUserData = async () => {
     try {
-      setColor("#1D64E1")
+      setColor('#1D64E1');
       const loginStatus = await AsyncStorage.getItem('isLogin');
       const storedSaldo = await AsyncStorage.getItem('saldo');
       const storedSaldoTertahan = await AsyncStorage.getItem('saldoTertahan');
@@ -285,7 +47,18 @@ export const AuthProvider = ({ children }) => {
       if (storedNoRekening !== null) setNoRekening(storedNoRekening);
       if (storedLimitDate !== null) setLimitDate(new Date(storedLimitDate));
       if (storedBcaId !== null) setBcaId(storedBcaId);
-      if (storeMutasi !== null) setMutasi(storeMutasi);
+      if (storeMutasi !== null) {
+        let parsed = storeMutasi;
+        while (typeof parsed === 'string') {
+          try {
+            parsed = JSON.parse(parsed);
+          } catch (error) {
+            console.error('Gagal parse JSON:', error);
+            break;
+          }
+        }
+        setMutasi(parsed);
+      }
     } catch (error) {
       console.error('Error loading data from AsyncStorage', error);
     } finally {
@@ -294,7 +67,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Save user data to AsyncStorage
-  const saveUserData = async (newSaldo, newUserName, newUserPin, newNoRekening, newBcaid,  newMutasi, newSaldoTertahan ) => {
+  const saveUserData = async (
+    newSaldo,
+    newUserName,
+    newUserPin,
+    newNoRekening,
+    newBcaid,
+    newMutasi,
+    newSaldoTertahan,
+  ) => {
     try {
       await AsyncStorage.setItem('saldo', newSaldo.toString());
       await AsyncStorage.setItem('userName', newUserName);
@@ -309,7 +90,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Check if the user is logged inßß
-  const login = async (pin) => {
+  const login = async pin => {
     if (isLocked) {
       alert('Akun terkunci. Anda tidak dapat login.');
       return false;
@@ -331,57 +112,112 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     await AsyncStorage.setItem('isLogin', 'false');
     setIsLogin(false);
-    setColor("#1D64E1")
+    setColor('#1D64E1');
   };
 
   // Update saldo
-  const updateSaldo = (newSaldo) => {
+  const updateSaldo = newSaldo => {
     setSaldo(newSaldo);
-    saveUserData(newSaldo, userName, userPin, noRekening, bcaId,  mutasi, saldoTertahan);
+    saveUserData(
+      newSaldo,
+      userName,
+      userPin,
+      noRekening,
+      bcaId,
+      mutasi,
+      saldoTertahan,
+    );
   };
 
   // Update saldo Tertahan
-  const updateSaldoTertahan = (newSaldoTertahan) => {
+  const updateSaldoTertahan = newSaldoTertahan => {
     setSaldoTertahan(newSaldoTertahan);
-    saveUserData(saldo, userName, userPin, noRekening, bcaId,  mutasi, newSaldoTertahan);
+    saveUserData(
+      saldo,
+      userName,
+      userPin,
+      noRekening,
+      bcaId,
+      mutasi,
+      newSaldoTertahan,
+    );
   };
 
   // Update user information
-  const updateUserName = (newName) => {
+  const updateUserName = newName => {
     setUserName(newName);
-    saveUserData(saldo, newName, userPin, noRekening, bcaId, mutasi, saldoTertahan,);
+    saveUserData(
+      saldo,
+      newName,
+      userPin,
+      noRekening,
+      bcaId,
+      mutasi,
+      saldoTertahan,
+    );
   };
 
-  const updateUserPin = (newPin) => {
+  const updateUserPin = newPin => {
     if (!isLocked) {
       setUserPin(newPin);
-      saveUserData(saldo, userName, newPin, noRekening, bcaId,  mutasi, saldoTertahan,);
+      saveUserData(
+        saldo,
+        userName,
+        newPin,
+        noRekening,
+        bcaId,
+        mutasi,
+        saldoTertahan,
+      );
     }
   };
 
-  const updateNoRekening = (newNoRekening) => {
+  const updateNoRekening = newNoRekening => {
     setNoRekening(newNoRekening);
-    saveUserData(saldo, userName, userPin, newNoRekening, bcaId,  mutasi, saldoTertahan,);
+    saveUserData(
+      saldo,
+      userName,
+      userPin,
+      newNoRekening,
+      bcaId,
+      mutasi,
+      saldoTertahan,
+    );
   };
 
   // Update saldo
-  const updateBcaid = (newBcaid) => {
+  const updateBcaid = newBcaid => {
     setBcaId(newBcaid);
-    saveUserData(saldo, userName, userPin, noRekening, newBcaid,  mutasi, saldoTertahan,);
+    saveUserData(
+      saldo,
+      userName,
+      userPin,
+      noRekening,
+      newBcaid,
+      mutasi,
+      saldoTertahan,
+    );
   };
   // Update saldo
-  const updateMutasi = (newMutasi) => {
+  const updateMutasi = newMutasi => {
     setMutasi(newMutasi);
-    saveUserData(saldo, userName, userPin, noRekening, bcaId, newMutasi, saldoTertahan);
+    saveUserData(
+      saldo,
+      userName,
+      userPin,
+      noRekening,
+      bcaId,
+      newMutasi,
+      saldoTertahan,
+    );
   };
 
   // Format saldo
-  const formatSaldo = (saldo) => {
+  const formatSaldo = saldo => {
     return `Rp ${new Intl.NumberFormat('id-ID', {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(saldo)}`;
-
   };
 
   // Lock status logic
@@ -405,7 +241,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [isLocked]);
 
-  const setLockDate = async (date) => {
+  const setLockDate = async date => {
     setLimitDate(date);
     try {
       await AsyncStorage.setItem('limitDate', date.toISOString());
@@ -436,15 +272,13 @@ export const AuthProvider = ({ children }) => {
         updateBcaid,
         updateSaldoTertahan,
         updateMutasi,
-      }}
-    >
+      }}>
       <LockContext.Provider
         value={{
           isLocked,
           limitDate,
           setLockDate,
-        }}
-      >
+        }}>
         {children}
       </LockContext.Provider>
     </AuthContext.Provider>

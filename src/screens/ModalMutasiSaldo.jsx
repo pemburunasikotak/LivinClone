@@ -17,7 +17,6 @@ const MutasiModal = () => {
   const currentMonth = new Date().toLocaleString('id-ID', {month: 'long'});
   const currentDate = new Date().toLocaleString('id-ID', {day: 'numeric'});
   const {formatSaldo, mutasi, updateMutasi, } = useAuth();
-  console.log('CEK MUTASI', mutasi, typeof(mutasi));
   const dataMutasi = typeof(mutasi) =="string" ? JSON.parse(mutasi) : mutasi || []
   const [currentEntry, setCurrentEntry] = useState({
     bulan: '',
@@ -223,7 +222,7 @@ const MutasiModal = () => {
                             </>
                           ) : (
                             <>
-                              {entry.keterangan == 'Tranfer' && (
+                              {entry.keterangan == 'Transfer' && (
                                 <>
                                   <Text style={{color: '#a8a8a8'}}>
                                     {entry.nama} {entry.noreg}

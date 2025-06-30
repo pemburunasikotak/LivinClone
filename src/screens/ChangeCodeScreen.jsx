@@ -12,6 +12,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../contexts/AuthContext';
 
+
 const ChangeCodeScreen = () => {
   const navigation = useNavigation();
   const { userPin, updateUserPin } = useAuth();
@@ -30,7 +31,7 @@ const ChangeCodeScreen = () => {
   };
 
   const handleOk = () => {
-    const { pin, new_pin, confirm_pin } = value;
+    const { new_pin } = value;
     updateUserPin(new_pin);
     Alert.alert('Sukses', 'Kode akses berhasil diubah');
     navigation.goBack();
@@ -38,10 +39,11 @@ const ChangeCodeScreen = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#EBEBEB' }}>
-      <View style={{ padding: 16 }}>
+      {/* <StatusBar backgroundColor="#007BFF" barStyle="light-content" /> */}
+      <View style={{ flex: 1,  }}>
+        <View style={{ marginTop:50, }}>
         <Text style={styles.fontMobileBca}>Change Pin</Text>
       </View>
-      <View style={{ flex: 1 }}>
         <View style={styles.inputWrapper}>
           <InputWithIcon
             label="Kode akses yang baru"

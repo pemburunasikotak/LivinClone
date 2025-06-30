@@ -9,32 +9,26 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useAuth} from '../contexts/AuthContext';
-import { useNavigation } from '@react-navigation/native';
 
 const ChangeSaldoScreen = () => {
-  const navigation = useNavigation();
   const {updateSaldo, updateSaldoTertahan, saldo, saldoTertahan, formatSaldo} = useAuth();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState(null);
   const [inputValue, setInputValue] = useState('');
-  console.warn('CEK INPUT VALUE', inputValue);
 
   const handleModalSubmit = async () => {
-    if(modalType==="saldo"){
+    if(modalType === "saldo"){
         if (inputValue) {
           await updateSaldo(inputValue);
           setModalVisible(false);
           setInputValue('');
         }
-    }else if(modalType ==="saldoTertahan"){
-      console.log('MASUK SINI 1')
+    }else if(modalType === "saldoTertahan"){
       if (inputValue) {
         await updateSaldoTertahan(inputValue);
         setModalVisible(false);
         setInputValue('');
-
-        console.log('MASUK SINI')
       }
     }
   };
@@ -97,7 +91,7 @@ const ChangeSaldoScreen = () => {
               <Text style={styles.modalButtonText}>Tertahan</Text>
             </LinearGradient>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.modalButton}
             onPress={() => {
               navigation.navigate('Mutasi');
@@ -107,7 +101,7 @@ const ChangeSaldoScreen = () => {
               colors={['#1696E6', '#02387F']}>
               <Text style={styles.modalButtonText}>Mutasi</Text>
             </LinearGradient>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       <View style={{paddingLeft:0, justifyContent:'center'}}>
           <Text style={{textAlign:'center'}}>SALDO SAAT INI : <Text style={{fontWeight:'800', color:'red' }}>{formatSaldo(saldo)}</Text></Text>

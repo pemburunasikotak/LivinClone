@@ -1,17 +1,50 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {View, Text, TouchableOpacity, Image, StatusBar} from 'react-native';
-import {useAuth} from '../contexts/AuthContext';
+import {useAuth, useLock} from '../contexts/AuthContext';
 import {useNavigation} from '@react-navigation/native';
 import {showToast} from './HomeScreen';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import {ScrollView} from 'react-native-gesture-handler';
+import firestore from '@react-native-firebase/firestore';
+import moment from 'moment';
 
 const TabunganNowScreen = () => {
   const navigation = useNavigation();
-  const {noRekening, saldo, formatSaldo, saldoTertahan} = useAuth();
+  const {noRekening, formatSaldo, logout} = useAuth();
   const [heightContent, setHeightContent] = useState(0);
   const bottomSheetRef = useRef(null);
+
+  const [saldoTertahanFormatted, setSaldoTertahanFormatted] = useState(0);
+  const [saldoNow, setSaldoNow] = useState(0);
+  const {setIsLocked} = useLock();
+
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection('mandiri')
+      .doc(noRekening)
+      .onSnapshot(documentSnapshot => {
+        if (documentSnapshot.exists) {
+          const dataa = documentSnapshot.data();
+          setSaldoTertahanFormatted(dataa.saldoTertahan);
+          setSaldoNow(dataa.saldo);
+          if (moment(dataa.limit, 'YYYY-MM-DD HH:mm:ss').isBefore(moment())) {
+            alert('Akun Anda Terkunci, Silakan login kembali');
+            logout();
+            setIsLocked(true);
+            navigation.reset({
+              index: 0,
+              routes: [{name: 'Front'}],
+            });
+          }
+        } else {
+          console.log('Document does not exist');
+        }
+      });
+
+    return () => subscriber(); // Unsubscribe on cleanup
+  }, []);
+
   const handleSheetChanges = useCallback(index => {
     setHeightContent(index);
   }, []);
@@ -53,7 +86,7 @@ const TabunganNowScreen = () => {
         {
           tanggal: `19 Januari ${currentYear}`,
           bank: 'BANK PERMATA',
-          nama: 'Hotman Cahaya',
+          nama: 'Muhammad Rasyid Ridho',
           noreg: '99213123112',
           nominal: 10000000,
           status: 'in',
@@ -62,8 +95,8 @@ const TabunganNowScreen = () => {
         {
           tanggal: `28 Januari ${currentYear}`,
           bank: 'BANK BCA',
-          nama: 'FAUZAN DASILVA',
-          noreg: '788123912',
+          nama: 'EDI PUTRA PRIBADI',
+          noreg: '8430475283',
           nominal: 20000000,
           status: 'out',
           keterangan: 'Transfer Rupiah',
@@ -71,8 +104,8 @@ const TabunganNowScreen = () => {
         {
           tanggal: `28 Januari ${currentYear}`,
           bank: 'BANK BCA',
-          nama: 'EDI PUTRA',
-          noreg: '99213123112',
+          nama: 'EDI PUTRA PRIBADI',
+          noreg: '8430475283',
           nominal: 7000,
           status: 'out',
           keterangan: 'Biaya',
@@ -86,8 +119,8 @@ const TabunganNowScreen = () => {
         {
           tanggal: `19 Februari ${currentYear}`,
           bank: 'BANK JAGO',
-          nama: 'Hotman Cahaya',
-          noreg: '99213123112',
+          nama: 'Muhammad Affandi',
+          noreg: '101234567890',
           nominal: 10000000,
           status: 'in',
           keterangan: 'Transfer Rupiah',
@@ -95,8 +128,8 @@ const TabunganNowScreen = () => {
         {
           tanggal: `28 Februari ${currentYear}`,
           bank: 'BANK BCA',
-          nama: 'FAUZAN DASILVA',
-          noreg: '788123912',
+          nama: 'EDI PUTRA PRIBADI',
+          noreg: '8430475283',
           nominal: 50000000,
           status: 'out',
           keterangan: 'Transfer Rupiah',
@@ -109,16 +142,17 @@ const TabunganNowScreen = () => {
         {
           tanggal: `19 Maret ${currentYear}`,
           bank: 'BANK JAGO',
-          nama: 'Hotman Cahaya',
-          noreg: '99213123112',
+          nama: 'Muhammad Affandi',
+          noreg: '101234567890',
           nominal: 10000000,
           status: 'in',
+          keterangan: 'Transfer Rupiah',
         },
         {
           tanggal: `20 Maret ${currentYear}`,
           bank: 'BANK BCA',
-          nama: 'FAUZAN DASILVA',
-          noreg: '788123912',
+          nama: 'EDI PUTRA PRIBADI',
+          noreg: '8430475283',
           nominal: 2000000,
           status: 'out',
           keterangan: 'Transfer',
@@ -131,16 +165,17 @@ const TabunganNowScreen = () => {
         {
           tanggal: `12 April ${currentYear}`,
           bank: 'BANK JAGO',
-          nama: 'Hotman Cahaya',
-          noreg: '99213123112',
+          nama: 'Muhammad Affandi',
+          noreg: '101234567890',
           nominal: 10000000,
           status: 'in',
+          keterangan: 'Transfer Rupiah',
         },
         {
           tanggal: `20 April ${currentYear}`,
           bank: 'BANK PERMATA',
-          nama: 'DASILVA',
-          noreg: '0078123912',
+          nama: 'Thomas Brian',
+          noreg: '3012345678',
           nominal: 3000000,
           status: 'out',
           keterangan: 'Transfer',
@@ -153,16 +188,17 @@ const TabunganNowScreen = () => {
         {
           tanggal: `02 MEI ${currentYear}`,
           bank: 'BANK OUB',
-          nama: 'Cahaya',
-          noreg: '9012323112',
+          nama: 'Mustika Cahaya',
+          noreg: '3012345678',
           nominal: 30000000,
           status: 'in',
+          keterangan: 'Transfer Rupiah',
         },
         {
           tanggal: `20 MEI ${currentYear}`,
           bank: 'BANK BCA',
-          nama: 'FAUZAN DASILVA',
-          noreg: '788123912',
+          nama: 'EDI PUTRA PRIBADI',
+          noreg: '8430475283',
           nominal: 20000000,
           status: 'out',
           keterangan: 'Transfer',
@@ -175,16 +211,17 @@ const TabunganNowScreen = () => {
         {
           tanggal: `19 Maret ${currentYear}`,
           bank: 'BANK JAGO',
-          nama: 'Hotman Cahaya',
-          noreg: '99213123112',
+          nama: 'Muhammad Affandi',
+          noreg: '101234567890',
           nominal: 10000000,
           status: 'in',
+          keterangan: 'Transfer Rupiah',
         },
         {
           tanggal: `20 Maret ${currentYear}`,
           bank: 'BANK BCA',
-          nama: 'FAUZAN DASILVA',
-          noreg: '788123912',
+          nama: 'EDI PUTRA PRIBADI',
+          noreg: '8430475283',
           nominal: 2000000,
           status: 'out',
           keterangan: 'Transfer',
@@ -204,8 +241,8 @@ const TabunganNowScreen = () => {
       {
         tanggal: `${currentDate} ${currentMonth} ${currentYear}`,
         bank: 'BANK BCA',
-        nama: 'DASILVA',
-        noreg: '781231233',
+        nama: 'Teguh Junian',
+        noreg: '7315917009',
         nominal: 35000000,
         status: 'in',
         keterangan: 'Transfer Rupiah',
@@ -213,8 +250,8 @@ const TabunganNowScreen = () => {
       {
         tanggal: `${currentDate - 1} ${currentMonth} ${currentYear}`,
         bank: 'BANK BCA',
-        nama: 'EDI PUTRA',
-        noreg: '788123912',
+        nama: 'EDI PUTRA PRIBADI',
+        noreg: '8430475283',
         nominal: 20000000,
         status: 'out',
         keterangan: 'Transfer Rupiah',
@@ -222,8 +259,8 @@ const TabunganNowScreen = () => {
       {
         tanggal: `${currentDate - 1} ${currentMonth} ${currentYear}`,
         bank: 'BANK BCA',
-        nama: 'EDI PUTRA',
-        noreg: '99213123112',
+        nama: 'EDI PUTRA PRIBADI',
+        noreg: '8430475283',
         nominal: 7000,
         status: 'out',
         keterangan: 'Biaya',
@@ -232,8 +269,8 @@ const TabunganNowScreen = () => {
       {
         tanggal: `${currentDate - 2} ${currentMonth} ${currentYear}`,
         bank: 'BANK BCA',
-        nama: 'FAUZAN DASILVA',
-        noreg: '788123912',
+        nama: 'EDI PUTRA PRIBADI',
+        noreg: '8430475283',
         nominal: 8000000,
         status: 'out',
         keterangan: 'Transfer Rupiah',
@@ -241,8 +278,8 @@ const TabunganNowScreen = () => {
       {
         tanggal: `${currentDate - 2} ${currentMonth} ${currentYear}`,
         bank: 'BANK BCA',
-        nama: 'EDI PUTRA',
-        noreg: '99213123112',
+        nama: 'EDI PUTRA PRIBADI',
+        noreg: '8430475283',
         nominal: 7000,
         status: 'out',
         keterangan: 'Biaya',
@@ -251,8 +288,8 @@ const TabunganNowScreen = () => {
       {
         tanggal: `${currentDate - 4} ${currentMonth} ${currentYear}`,
         bank: 'BANK BCA',
-        nama: 'EDI PUTRA',
-        noreg: '788123912',
+        nama: 'EDI PUTRA PRIBADI',
+        noreg: '8430475283',
         nominal: 2000000,
         status: 'in',
         keterangan: 'Transfer Rupiah',
@@ -260,8 +297,8 @@ const TabunganNowScreen = () => {
       {
         tanggal: `${currentDate - 4} ${currentMonth} ${currentYear}`,
         bank: 'BANK BCA',
-        nama: 'EDI PUTRA',
-        noreg: '788123912',
+        nama: 'EDI PUTRA PRIBADI',
+        noreg: '8430475283',
         nominal: 40000000,
         status: 'in',
         keterangan: 'Transfer Rupiah',
@@ -304,16 +341,18 @@ const TabunganNowScreen = () => {
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={{width: '33%'}}>
+        <TouchableOpacity style={{width: '33%', alignItems: 'center', justifyContent: 'center'}}>
           <Image
             resizeMode="contain"
             style={{
-              height: 70,
-              width: 100,
-              alignSelf: 'flex-end',
+              height: 100,
+              width: 60,
+              alignSelf: 'center',
               borderRadius: 10,
+              transform: [{rotate: '90deg'}]
             }}
-            source={require('../assets/livin/tabungannow/cardmandiri.png')}
+            // source={require('../assets/livin/tabungannow/cardmandiri.png')}
+            source={require('../assets/livin/paltinum.png')}
           />
         </TouchableOpacity>
         <View
@@ -391,7 +430,7 @@ const TabunganNowScreen = () => {
             marginTop: 20,
           }}>
           <Text style={{fontWeight: 'bold', color: '#FFF', fontSize: 20}}>
-            {formatSaldo(saldo)}
+            {formatSaldo(saldoNow)}
           </Text>
           <Text style={{fontSize: 12, color: '#FFF', fontWeight: 'bold'}}>
             00
@@ -408,7 +447,7 @@ const TabunganNowScreen = () => {
           <Text style={{color: '#FFF'}}>Nominal Tertahan</Text>
           <Text style={{color: '#FFF', marginLeft: 20}}>
             {' '}
-            {formatSaldo(saldoTertahan)}
+            {formatSaldo(saldoTertahanFormatted)}
           </Text>
           <Text style={{fontSize: 10, color: '#FFF'}}>00</Text>
         </View>
@@ -739,7 +778,7 @@ const TabunganNowScreen = () => {
                                   <Text style={{color: '#a8a8a8'}}>
                                     Dari {item?.bank}
                                   </Text>
-                                  <Text style={{color: '#a8a8a8'}}>
+                                  <Text style={{color: '#a8a8a8', textTransform:'uppercase'}}>
                                     {item.nama} {item.noreg}
                                   </Text>
                                 </>
@@ -747,7 +786,7 @@ const TabunganNowScreen = () => {
                                 <>
                                   {item.keterangan == 'Transfer' && (
                                     <>
-                                      <Text style={{color: '#a8a8a8'}}>
+                                      <Text style={{color: '#a8a8a8',  textTransform:'uppercase'}}>
                                         {item.nama} {item.noreg}
                                       </Text>
                                     </>

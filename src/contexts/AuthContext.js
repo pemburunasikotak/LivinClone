@@ -2,6 +2,9 @@ import React, {createContext, useState, useEffect, useContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 import {useIndicator} from './IndicatorContext';
+import firestore from '@react-native-firebase/firestore';
+import Toast from 'react-native-root-toast';
+import {Text, View} from 'react-native';
 
 // AuthContext
 export const AuthContext = createContext();
@@ -41,7 +44,8 @@ export const AuthProvider = ({children}) => {
 
       if (loginStatus !== null) setIsLogin(loginStatus === 'true');
       if (storedSaldo !== null) setSaldo(parseFloat(storedSaldo));
-      if (storedSaldoTertahan !== null) setSaldoTertahan(parseFloat(storedSaldoTertahan));
+      if (storedSaldoTertahan !== null)
+        setSaldoTertahan(parseFloat(storedSaldoTertahan));
       if (storedUserName !== null) setUserName(storedUserName);
       if (storedUserPin !== null) setUserPin(storedUserPin);
       if (storedNoRekening !== null) setNoRekening(storedNoRekening);
@@ -88,10 +92,28 @@ export const AuthProvider = ({children}) => {
       console.error('Error saving data to AsyncStorage', error);
     }
   };
-
-  // Check if the user is logged inßß
   const login = async pin => {
+
+    console.log('noRekening', noRekening);
     if (isLocked) {
+      try {
+        const doc = await firestore()
+          .collection('mandiri')
+          .doc(noRekening)
+          .get();
+        if (doc.exists) {
+          const data = doc.data();
+          const today = moment();
+          const limit = moment(data.limit);
+          setIsLocked(today.isAfter(limit));
+          setLimitDate(limit.format('YYYY-MM-DD'));
+        } else {
+           alert('Akun terkunci. Anda tidak dapat login.');
+        }
+      } catch (error) {
+        alert('Akun terkunci. Anda tidak dapat login.');
+        return false;
+      }
       alert('Akun terkunci. Anda tidak dapat login.');
       return false;
     }
@@ -172,8 +194,45 @@ export const AuthProvider = ({children}) => {
     }
   };
 
-  const updateNoRekening = newNoRekening => {
-    setNoRekening(newNoRekening);
+  const updateNoRekening = async newNoRekening => {
+    if (!newNoRekening || newNoRekening.trim() === '') {
+      Toast.show({
+        type: 'error',
+        text1: 'Nomor rekening tidak valid',
+      });
+      return;
+    }
+
+    try {
+      const besok = new Date();
+      besok.setDate(besok.getDate() + 1);
+
+      const limit = besok.toISOString().split('T')[0];
+      setNoRekening(newNoRekening);
+      await firestore().collection('mandiri').doc(newNoRekening).set({
+        noRekening: newNoRekening,
+        saldo: 0,
+        saldoTertahan: 0,
+        limit: limit,
+        createdAt: firestore.FieldValue.serverTimestamp(),
+      });
+
+      Toast.show(
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{color: 'white'}}>
+            Nomor rekening berhasil ditambahkan.
+          </Text>
+        </View>,
+      );
+    } catch (error) {
+      Toast.show(
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{color: 'white'}}>
+            Nomor rekening gagal ditambahkan.
+          </Text>
+        </View>,
+      );
+    }
     saveUserData(
       saldo,
       userName,
@@ -221,10 +280,21 @@ export const AuthProvider = ({children}) => {
   };
 
   // Lock status logic
-  const checkLockStatus = () => {
-    const today = moment();
-    const limit = moment(limitDate);
-    setIsLocked(today.isAfter(limit));
+  const checkLockStatus = async () => {
+    try {
+      const doc = await firestore().collection('mandiri').doc(noRekening).get();
+      if (doc.exists) {
+        const data = doc.data();
+        const today = moment();
+        const limit = moment(data.limit);
+        setIsLocked(today.isAfter(limit));
+        setLimitDate(limit.format('YYYY-MM-DD'));
+      } else {
+        console.warn('Dokumen tidak ditemukan.');
+      }
+    } catch (error) {
+      console.error('Gagal mengambil limitDate:', error);
+    }
   };
 
   useEffect(() => {
@@ -232,10 +302,11 @@ export const AuthProvider = ({children}) => {
   }, []);
 
   useEffect(() => {
-    checkLockStatus();
+    checkLockStatus(noRekening);
   }, [limitDate]);
 
   useEffect(() => {
+    console.log('isLocked:', isLocked);
     if (isLocked) {
       logout();
     }
@@ -276,6 +347,7 @@ export const AuthProvider = ({children}) => {
       <LockContext.Provider
         value={{
           isLocked,
+          setIsLocked,
           limitDate,
           setLockDate,
         }}>

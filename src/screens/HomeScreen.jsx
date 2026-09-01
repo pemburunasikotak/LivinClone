@@ -317,7 +317,7 @@ const HomeScreen = () => {
                       <Image
                         resizeMode="contain"
                         style={{height: 50, width: 60, alignSelf: 'flex-end'}}
-                        source={require('../assets/livin/card.jpeg')}
+                        source={require('../assets/livin/paltinum.png')}
                       />
                     </View>
                     <TouchableOpacity
@@ -441,7 +441,7 @@ const HomeScreen = () => {
                       <MenuItemFavorit label="Bayar" disabled />
                       <MenuItemFavorit label="Top-up" disabled />
                       {/* <MenuItemFavorit label="Layanan" disabled /> */}
-                      <MenuItemFavorit label="Layanan"  onPress={()=>  navigation.navigate('Change Saldo')}/>
+                      <MenuItemFavorit label="Layanan" disabled/>
                     </View>
                   </ScrollView>
                 </View>
@@ -843,10 +843,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 24,
-    // paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: '#33A1FE',
-    // backgroundColor: 'red',
   },
   logo: {
     width: 80,

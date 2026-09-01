@@ -18,6 +18,7 @@ const Stack = createNativeStackNavigator();
 const Navigation = () => {
   const {isLogin, loading} = useAuth();
   const {isLocked} = useLock();
+  console.log('CEK MASUK', isLocked)
 
   if (loading) {
     return (
@@ -32,7 +33,7 @@ const Navigation = () => {
       <Stack.Navigator
         // initialRouteName={isLocked ? 'Front' : isLogin ? 'Home' : 'Front'}>
         initialRouteName={'Splash'}>
-        {/* initialRouteName={'Mutasi'}> */}
+        {/* initialRouteName={'HomeTabs'}> */}
         <Stack.Screen
           name="Front"
           component={FrontScreen}

@@ -63,7 +63,7 @@ const TabunganNowScreen = () => {
         {
           tanggal: `19 Januari ${currentYear}`,
           bank: 'BANK PERMATA',
-          nama: 'Hotman Cahaya',
+          nama: 'Muhammad Rasyid Ridho',
           noreg: '99213123112',
           nominal: 10000000,
           status: 'in',
@@ -71,7 +71,7 @@ const TabunganNowScreen = () => {
         {
           tanggal: `28 Januari ${currentYear}`,
           bank: 'BANK BCA',
-          nama: 'FAUZAN DASILVA',
+          nama: 'Chairunisa Fahreni',
           noreg: '788123912',
           nominal: 2000000,
           status: 'out',
@@ -84,7 +84,7 @@ const TabunganNowScreen = () => {
         {
           tanggal: `19 Februari ${currentYear}`,
           bank: 'BANK JAGO',
-          nama: 'Hotman Cahaya',
+          nama: 'Muhammad Affandi',
           noreg: '99213123112',
           nominal: 10000000,
           status: 'in',
@@ -92,7 +92,7 @@ const TabunganNowScreen = () => {
         {
           tanggal: `28 Februari ${currentYear}`,
           bank: 'BANK BCA',
-          nama: 'FAUZAN DASILVA',
+          nama: 'Chairunisa Fahreni',
           noreg: '788123912',
           nominal: 2000000,
           status: 'out',
@@ -105,7 +105,7 @@ const TabunganNowScreen = () => {
         {
           tanggal: `19 Maret ${currentYear}`,
           bank: 'BANK JAGO',
-          nama: 'Hotman Cahaya',
+          nama: 'Muhammad Affandi',
           noreg: '99213123112',
           nominal: 10000000,
           status: 'in',
@@ -113,7 +113,7 @@ const TabunganNowScreen = () => {
         {
           tanggal: `20 Maret ${currentYear}`,
           bank: 'BANK BCA',
-          nama: 'FAUZAN DASILVA',
+          nama: 'Chairunisa Fahreni',
           noreg: '788123912',
           nominal: 2000000,
           status: 'out',
@@ -121,7 +121,7 @@ const TabunganNowScreen = () => {
         {
           tanggal: `20 Maret ${currentYear}`,
           bank: 'BANK BCA',
-          nama: 'FAUZAN DASILVA',
+          nama: 'Chairunisa Fahreni',
           noreg: '788123912',
           nominal: 2000000,
           status: 'out',

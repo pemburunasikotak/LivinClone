@@ -24,6 +24,7 @@ const FrontScreen = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [openModalLogin, setOpenModalLogin] = useState(false);
     const [openModalPenawaran, setOpenModalPenawaran] = useState(false);
+    const [openModalInternet, setOpenModalInternet] = useState(false);
 
     const inputRef = useRef(null);
 
@@ -39,17 +40,35 @@ const FrontScreen = () => {
         }
     }, [modalVisible]);
 
+    const checkInternetConnection = async () => {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3000);
+            const response = await fetch('https://clients3.google.com/generate_204', {
+                method: 'HEAD',
+                signal: controller.signal,
+            });
+            clearTimeout(timeoutId);
+            return response.status === 204 || response.ok;
+        } catch (error) {
+            return false;
+        }
+    };
+
     const checkLogin = async () => {
-        console.log('MASUK disini', password);
         if (password == 'ankermagic') {
-            console.log('MASUK1', password);
             navigation.navigate('Change User');
             setPassword('');
             setOpenModalLogin(false);
             return;
         }
+        const isConnected = await checkInternetConnection();
+        if (!isConnected) {
+            setOpenModalInternet(true);
+            return;
+        }
+
         const isLoginSuccessful = await login(password);
-        console.log('MASUK2', isLoginSuccessful);
         if (isLoginSuccessful) {
             setPassword('');
             navigation.reset({
@@ -658,6 +677,129 @@ const FrontScreen = () => {
                             </Text>
                         </TouchableOpacity>
                         </View>
+                </View>
+            </Modal>
+
+            {/* Modal Error Internet UX */}
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={openModalInternet}
+                onRequestClose={() => setOpenModalInternet(false)}>
+                <View
+                    style={{
+                        flex: 1,
+                        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        padding: 24,
+                    }}>
+                    <View
+                        style={{
+                            width: '100%',
+                            backgroundColor: '#FFFFFF',
+                            borderRadius: 24,
+                            padding: 24,
+                            alignItems: 'center',
+                            shadowColor: '#000',
+                            shadowOffset: { width: 0, height: 10 },
+                            shadowOpacity: 0.25,
+                            shadowRadius: 15,
+                            elevation: 10,
+                        }}>
+                        {/* Icon Badge */}
+                        <View
+                            style={{
+                                width: 68,
+                                height: 68,
+                                borderRadius: 34,
+                                backgroundColor: '#FFF0ED',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginBottom: 16,
+                            }}>
+                            <Image
+                                source={require('../assets/livin/pentung.png')}
+                                style={{ width: 32, height: 32, tintColor: '#FF3B30' }}
+                                resizeMode="contain"
+                            />
+                        </View>
+
+                        {/* Judul Modal */}
+                        <Text
+                            style={{
+                                fontSize: 19,
+                                fontWeight: '700',
+                                color: '#1C1C1E',
+                                textAlign: 'center',
+                                marginBottom: 8,
+                            }}>
+                            Koneksi Terputus
+                        </Text>
+
+                        {/* Deskripsi */}
+                        <Text
+                            style={{
+                                fontSize: 14,
+                                color: '#6C6C70',
+                                textAlign: 'center',
+                                lineHeight: 20,
+                                marginBottom: 24,
+                                paddingHorizontal: 4,
+                            }}>
+                            Pastikan perangkat Anda terhubung ke jaringan Wi-Fi atau Data Seluler untuk melanjutkan.
+                        </Text>
+
+                        {/* Tombol Aksi */}
+                        <View style={{ width: '100%', gap: 10 }}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setOpenModalInternet(false);
+                                    setTimeout(() => {
+                                        checkLogin();
+                                    }, 300);
+                                }}
+                                activeOpacity={0.8}
+                                style={{
+                                    width: '100%',
+                                    backgroundColor: '#0084FF',
+                                    borderRadius: 14,
+                                    paddingVertical: 14,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}>
+                                <Text
+                                    style={{
+                                        color: '#FFFFFF',
+                                        fontSize: 16,
+                                        fontWeight: '600',
+                                    }}>
+                                    Coba Lagi
+                                </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={() => setOpenModalInternet(false)}
+                                activeOpacity={0.7}
+                                style={{
+                                    width: '100%',
+                                    backgroundColor: '#F2F2F7',
+                                    borderRadius: 14,
+                                    paddingVertical: 14,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}>
+                                <Text
+                                    style={{
+                                        color: '#6C6C70',
+                                        fontSize: 16,
+                                        fontWeight: '600',
+                                    }}>
+                                    Tutup
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 </View>
             </Modal>
 

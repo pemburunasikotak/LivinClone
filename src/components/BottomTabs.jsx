@@ -12,6 +12,7 @@ import HomeScreen from '../screens/HomeScreen';
 import ChangeSaldoScreen from '../screens/ChangeSaldoScreen';
 import MInfoScreen from '../screens/MInfoScreen/MInfoScreen';
 import LinearGradient from 'react-native-linear-gradient';
+import HomeScreenV2 from '../screens/HomeScreenV2';
 
 
 const DisabledScreen = () => <ScreenComponent title="Disabled" />;
@@ -37,7 +38,7 @@ export default function BottomTabs() {
       }}>
       <Tab.Screen
         name="Beranda"
-        component={HomeScreen}
+        component={HomeScreenV2}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => (

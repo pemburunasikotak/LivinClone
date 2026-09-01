@@ -90,7 +90,7 @@ const ChangeUserScreen = () => {
             </LinearGradient>
           </TouchableOpacity>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.modalButton}
             onPress={() => {
               setModalType('limit');
@@ -101,8 +101,8 @@ const ChangeUserScreen = () => {
               colors={['#1696E6', '#02387F']}>
               <Text style={styles.modalButtonText}>Limit</Text>
             </LinearGradient>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </TouchableOpacity> */}
+          {/* <TouchableOpacity
             style={styles.modalButton}
             onPress={() => {
               setModalType('bcaid');
@@ -113,7 +113,7 @@ const ChangeUserScreen = () => {
               colors={['#1696E6', '#02387F']}>
               <Text style={styles.modalButtonText}>ID</Text>
             </LinearGradient>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={{...styles.modalButton, backgroundColor: 'red'}}
             onPress={() => {

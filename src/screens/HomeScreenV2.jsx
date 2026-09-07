@@ -129,7 +129,8 @@ const dataContentDetail = [
     name: 'tabungan',
     header: 'Tabungan Now IDR',
     detail: 'RP',
-    icon: require('../assets/livin/paltinum.png'),
+    // icon: require('../assets/livin/paltinum.png'),
+    icon: require('../assets/livin/tabungannow/cardmandiri.png'),
   },
   {
     name: 'deposite',
@@ -824,10 +825,14 @@ const ContentDetail = ({active, issaldoVisible}) => {
             <View style={{alignItems: 'flex-end', justifyContent: 'center'}}>
               <Image
                 style={{
-                  height: 56, 
-                  width: 34, 
-                  borderRadius: 2,
-                  transform: [{rotate: '90deg'}]
+                  // height: 56, 
+                  // width: 34, 
+                  // borderRadius: 2,
+                  // transform: [{rotate: '90deg'}]
+                   height: 56,
+                    width: 90,
+                    alignSelf: 'flex-end',
+                    borderRadius: 5,
                 }}
                 resizeMode="cover"
                 source={data?.icon}

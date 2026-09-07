@@ -345,14 +345,14 @@ const TabunganNowScreen = () => {
           <Image
             resizeMode="contain"
             style={{
-              height: 100,
-              width: 60,
+              height: 70,
+              width: 100,
               alignSelf: 'center',
               borderRadius: 10,
-              transform: [{rotate: '90deg'}]
+              // transform: [{rotate: '90deg'}]
             }}
-            // source={require('../assets/livin/tabungannow/cardmandiri.png')}
-            source={require('../assets/livin/paltinum.png')}
+            source={require('../assets/livin/tabungannow/cardmandiri.png')}
+            // source={require('../assets/livin/paltinum.png')}
           />
         </TouchableOpacity>
         <View

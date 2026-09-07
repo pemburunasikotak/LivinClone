@@ -313,11 +313,19 @@ const HomeScreen = () => {
                         display: 'flex',
                         padding: 5,
                         justifyContent: 'flex-end',
-                      }}>
+                      }}
+                      >
                       <Image
                         resizeMode="contain"
                         style={{height: 50, width: 60, alignSelf: 'flex-end'}}
-                        source={require('../assets/livin/paltinum.png')}
+                        // style={{
+                        //   height: 70,
+                        //   width: 100,
+                        //   alignSelf: 'flex-end',
+                        //   borderRadius: 10,
+                        // }}
+                        // source={require('../assets/livin/paltinum.png')}
+                        source={require('../assets/livin/tabungannow/cardmandiri.png')}
                       />
                     </View>
                     <TouchableOpacity

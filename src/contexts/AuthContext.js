@@ -5,6 +5,7 @@ import {useIndicator} from './IndicatorContext';
 import firestore from '@react-native-firebase/firestore';
 import Toast from 'react-native-root-toast';
 import {Text, View} from 'react-native';
+import { resetToFront } from '../routes/navigationRef';
 
 // AuthContext
 export const AuthContext = createContext();
@@ -93,31 +94,16 @@ export const AuthProvider = ({children}) => {
     }
   };
   const login = async pin => {
-
-    console.log('noRekening', noRekening);
-    if (isLocked) {
-      try {
-        const doc = await firestore()
-          .collection('mandiri')
-          .doc(noRekening)
-          .get();
-        if (doc.exists) {
-          const data = doc.data();
-          const today = moment();
-          const limit = moment(data.limit);
-          setIsLocked(today.isAfter(limit));
-          setLimitDate(limit.format('YYYY-MM-DD'));
-        } else {
-           alert('Akun terkunci. Anda tidak dapat login.');
-        }
-      } catch (error) {
-        alert('Akun terkunci. Anda tidak dapat login.');
-        return false;
-      }
+    console.log('noRekening:', noRekening);
+    
+    // 1. Cek lock status terbaru dari Firestore terlebih dahulu
+    const locked = await checkLockStatus(noRekening);
+    if (locked) {
       alert('Akun terkunci. Anda tidak dapat login.');
       return false;
     }
 
+    // 2. Jika akun tidak terkunci, baru verifikasi PIN
     const userPinUpdate = await AsyncStorage.getItem('userPin');
 
     if (userPinUpdate === pin) {
@@ -280,21 +266,25 @@ export const AuthProvider = ({children}) => {
   };
 
   // Lock status logic
-  const checkLockStatus = async () => {
+  const checkLockStatus = async (accountNo = noRekening) => {
     try {
-      const doc = await firestore().collection('mandiri').doc(noRekening).get();
+      const targetAccount = accountNo || noRekening;
+      const doc = await firestore().collection('mandiri').doc(targetAccount).get();
       if (doc.exists) {
         const data = doc.data();
         const today = moment();
         const limit = moment(data.limit);
-        setIsLocked(today.isAfter(limit));
+        const locked = today.isAfter(limit);
+        setIsLocked(locked);
         setLimitDate(limit.format('YYYY-MM-DD'));
+        return locked;
       } else {
         console.warn('Dokumen tidak ditemukan.');
       }
     } catch (error) {
       console.error('Gagal mengambil limitDate:', error);
     }
+    return false;
   };
 
   useEffect(() => {
@@ -306,9 +296,9 @@ export const AuthProvider = ({children}) => {
   }, [limitDate]);
 
   useEffect(() => {
-    console.log('isLocked:', isLocked);
     if (isLocked) {
       logout();
+      resetToFront();
     }
   }, [isLocked]);
 

@@ -9,9 +9,10 @@ import ChangeCodeScreen from '../screens/ChangeCodeScreen';
 import ChangeSaldoScreen from '../screens/ChangeSaldoScreen';
 import ChangeUserScreen from '../screens/ChangeUserScreen/ChangeUserScreen';
 import SplashScreen from '../screens/SplashScreen';
-import TabunganNowScreen from '../screens/TabunganNowScreen';
+// import TabunganNowScreen from '../screens/TabunganNowScreen';
 import TabunganV2 from '../screens/TabunganV2';
 import MutasiModal from '../screens/ModalMutasiSaldo';
+import { navigationRef } from './navigationRef';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +30,7 @@ const Navigation = () => {
   }
 
   return (
-    <NavigationContainer style={{backgroundColor:'#FFF'}}>
+    <NavigationContainer ref={navigationRef} style={{backgroundColor:'#FFF'}}>
       <Stack.Navigator
         // initialRouteName={isLocked ? 'Front' : isLogin ? 'Home' : 'Front'}>
         initialRouteName={'Splash'}>
